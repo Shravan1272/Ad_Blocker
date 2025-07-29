@@ -23,6 +23,8 @@ function removeads(){
                 card=temp;
             }
             //making the add disappear!!
+            console.log("Found and removed ad: ", el.innerText);
+
             if(card){
                 card.setAttribute("style","display: none !important;");
             }
