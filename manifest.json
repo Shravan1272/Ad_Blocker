@@ -1,0 +1,23 @@
+{
+    "manifest_version":2,
+    "name": "LinkedIn Ad_Blocker",
+    "descirption": "Blocking ads",
+    "version": "0.0.1",
+    "author": "Shravan",
+    "browser_action":{
+        "default_title":"LinkedIn Ad_Blocker"
+    },
+    "permissions":[
+        "tabs",
+        "webNavigation",
+        "scripting"
+    ],
+    "backgroud":{
+        "scripts":[
+            "extenion.js"
+        ],
+        "host_permissions": [
+            "https://www.linkedin.com/*"
+        ]
+    }
+}
