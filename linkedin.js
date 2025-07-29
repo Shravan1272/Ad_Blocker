@@ -1,3 +1,5 @@
+console.log("LinkedIn ad blocker is running...");
+
 function removeads(){
     //to get all span elemenrts on the page
     let elements = [...document.getElementsByTagName("p"), ...document.getElementsByTagName("span")];
