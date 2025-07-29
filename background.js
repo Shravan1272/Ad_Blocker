@@ -8,14 +8,15 @@
 chrome.webNavigation.onCommitted.addListener(function(tab){
     //prevents script from running when other frames load
     if(tab.frameId==0){
-        chrome.tabs.query({active:true, lastFocusedWindow: true},tabs=>{
+        chrome.tabs.get(tab.tabId,(currentTab)=>{
             //get the URL of the web page
-            let url = tab[0].url;
+            let url = currentTab.url;
 
             //remove unnecessary protocol definations and www subdomain from URL
-            let parsedUrl = url.replace("https://","")
-            .replace("http:","")
-            .replace("www","")
+            let parsedUrl = url
+            .replace("https://","")
+            .replace("http://","")
+            .replace("www.","");
 
             //remove path and queries(linked.com/feed)
             //we only need the base domain
@@ -26,23 +27,19 @@ chrome.webNavigation.onCommitted.addListener(function(tab){
             let domain = parsedUrl.slice(0, endIndex);
 
            try {
-                if(domain.length<1 ||domain==null || domain===undefined){
+                if(domain.length<1 ||domain===null || domain===undefined){
                     return;
                 }else if(domain == "linkedin.com"){
-                    runLinkedScript();
-                    return;
+                    chrome.scripting.executeScript({
+                        target: {tabId:tab.tabId},
+                        files:["linkedin.js"]
+                    });
+                    
                 }
             }catch(err){
-                throw err;
+                console.error("Error: ",err);
             }
-        })
+        });
     }
 });
 
-function runLinkedScript(){
-    //injecting script from  file into web page
-    chrome.tabs.executeScript({
-        file:'linkedin.js'
-    });
-    return true;
-}
